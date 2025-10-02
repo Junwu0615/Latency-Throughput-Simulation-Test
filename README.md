@@ -33,7 +33,7 @@
   
 - #### *啟動 docker-compose*
   ```bash
-  docker-compose up -d
+  docker-compose up -p latency_throughput_simulation_test -d
   ```
 
 - #### *檢視服務是否正確啟用*

@@ -3,25 +3,25 @@ version: '3.8'
 services:
   zookeeper: # Kafka 的元件設計依賴 Zookeeper 來做叢集協調
     image: confluentinc/cp-zookeeper:7.6.1
-    restart: unless-stopped
     container_name: zookeeper_container
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
+      - '2181:2181'
     networks:
       - simulation_test_connection
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
-    restart: unless-stopped
     container_name: kafka_container
+    restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
-      - "9092:9092"    # 給外部客戶端連線
-      - "29092:29092"  # 給內部 docker network 連線
+      - '9092:9092'    # 給外部客戶端連線
+      - '29092:29092'  # 給內部 docker network 連線
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -33,28 +33,55 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     networks:
       - simulation_test_connection
+    healthcheck:
+      test: ['CMD-SHELL', 'kafka-broker-api-versions.sh --bootstrap-server localhost:29092 || exit 1']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  kafka-ui: # 替代方案 : Offset Explorer
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka_ui_container
+    restart: unless-stopped
+    ports:
+      - '9093:8080'
+    environment:
+      KAFKA_CLUSTERS_0_NAME: 'Simulation-Kafka-Cluster'
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka:29092'
+    depends_on:
+      kafka:
+        condition: service_healthy # 等待 kafka 服務被標記為 HEALTHY
+    networks:
+      - simulation_test_connection
 
 
   mongo:
-    image: mongo:7
-    restart: unless-stopped
+    image: mongo:7.0
     container_name: mongo_container
+    restart: unless-stopped
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - './mongo_data:/data/db'
     networks:
       - simulation_test_connection
+    healthcheck:
+      test: [ 'CMD', 'mongosh', '--eval', 'db.runCommand({ping: 1})' ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
 
   mongo-express:
     image: mongo-express:latest
-    restart: unless-stopped
     container_name: mongo_express_container
+    restart: unless-stopped
     ports:
-      - "27018:8081"
+      - '27018:8081'
     env_file:
       - .env
     environment:
@@ -64,34 +91,46 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: ${ME_CONFIG_BASICAUTH_PASSWORD}
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - simulation_test_connection
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy # 等待 mongo 服務被標記為 HEALTHY
 
 
   redis:
-    image: redis:7
-    restart: unless-stopped
+    image: redis:7.2-alpine
     container_name: redis_container
-    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    restart: unless-stopped
+    command: ['redis-server', '--requirepass', '${REDIS_PASSWORD}']
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - './redis_data:/data'
     networks:
       - simulation_test_connection
+    healthcheck:
+      test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'PING']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
 
   redis_insight:
     image: redis/redisinsight:latest
-    restart: unless-stopped
     container_name: redis_insight_container
+    restart: unless-stopped
     ports:
-      - "6380:5540"
+      - '6380:5540'
     environment:
       REDISINSIGHT_HOST: 0.0.0.0 # 存取 Redis 服務，必須設置這個變數
     volumes:
       - './redis_insight_data:/db'
+    networks:
+      - simulation_test_connection
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy # 等待 redis 服務被標記為 HEALTHY
 
 
 networks:
