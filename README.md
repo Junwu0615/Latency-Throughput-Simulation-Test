@@ -33,7 +33,7 @@
   
 - #### *啟動 docker-compose*
   ```bash
-  docker-compose up -p latency_throughput_simulation_test -d
+  docker-compose -p latency_throughput_simulation_test up -d
   ```
 
 - #### *檢視服務是否正確啟用*
@@ -43,7 +43,8 @@
 
 - #### *關閉服務*
   ```bash
-  docker-compose down
+  docker-compose -p latency_throughput_simulation_test down
   ```
   
-- ![PNG](./sample/docker-compose%20up.PNG)
+- ![PNG](./sample/docker-compose%20up_00.PNG)
+- ![PNG](./sample/docker-compose%20up_01.PNG)

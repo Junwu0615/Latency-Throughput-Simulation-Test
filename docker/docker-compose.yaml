@@ -12,13 +12,17 @@ services:
       - '2181:2181'
     networks:
       - simulation_test_connection
+    healthcheck:
+      test: ['CMD-SHELL', 'echo ruok | nc localhost 2181']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   kafka:
     image: confluentinc/cp-kafka:7.6.1
     container_name: kafka_container
     restart: unless-stopped
-    depends_on:
-      - zookeeper
     ports:
       - '9092:9092'    # 給外部客戶端連線
       - '29092:29092'  # 給內部 docker network 連線
@@ -33,12 +37,17 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     networks:
       - simulation_test_connection
+    depends_on:
+      zookeeper:
+        condition: service_healthy # Zookeeper 被標記為 HEALTHY
     healthcheck:
-      test: ['CMD-SHELL', 'kafka-broker-api-versions.sh --bootstrap-server localhost:29092 || exit 1']
-      interval: 5s
-      timeout: 3s
+      test: ['CMD-SHELL', 'nc -z localhost 29092']
+#      test: ['CMD-SHELL', 'kafka-broker-api-versions.sh --bootstrap-server localhost:29092 || exit 1']
+#      test: ['CMD-SHELL', 'JMX_PORT=1099 /usr/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:29092 || exit 1']
+      interval: 10s
+      timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 40s
 
   kafka-ui: # 替代方案 : Offset Explorer
     image: provectuslabs/kafka-ui:latest
@@ -49,11 +58,11 @@ services:
     environment:
       KAFKA_CLUSTERS_0_NAME: 'Simulation-Kafka-Cluster'
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka:29092'
-    depends_on:
-      kafka:
-        condition: service_healthy # 等待 kafka 服務被標記為 HEALTHY
     networks:
       - simulation_test_connection
+    depends_on:
+      kafka:
+        condition: service_healthy # kafka 被標記為 HEALTHY
 
 
   mongo:
@@ -70,11 +79,11 @@ services:
     networks:
       - simulation_test_connection
     healthcheck:
-      test: [ 'CMD', 'mongosh', '--eval', 'db.runCommand({ping: 1})' ]
-      interval: 5s
-      timeout: 3s
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ping: 1})']
+      interval: 10s
+      timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 40s
 
   mongo-express:
     image: mongo-express:latest
@@ -95,7 +104,7 @@ services:
       - simulation_test_connection
     depends_on:
       mongo:
-        condition: service_healthy # 等待 mongo 服務被標記為 HEALTHY
+        condition: service_healthy # mongo 被標記為 HEALTHY
 
 
   redis:
@@ -111,10 +120,10 @@ services:
       - simulation_test_connection
     healthcheck:
       test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'PING']
-      interval: 5s
-      timeout: 3s
+      interval: 10s
+      timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 40s
 
   redis_insight:
     image: redis/redisinsight:latest
@@ -130,7 +139,7 @@ services:
       - simulation_test_connection
     depends_on:
       redis:
-        condition: service_healthy # 等待 redis 服務被標記為 HEALTHY
+        condition: service_healthy # redis 被標記為 HEALTHY
 
 
 networks:
