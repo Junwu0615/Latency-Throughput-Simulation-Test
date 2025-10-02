@@ -45,3 +45,5 @@
   ```bash
   docker-compose down
   ```
+  
+- ![PNG](./sample/docker-compose%20up.PNG)

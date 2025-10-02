@@ -2,3 +2,7 @@ __pycache__
 .idea
 .ipynb_checkpoints
 .venv
+
+mongo_data
+redis_data
+redis_insight_data
