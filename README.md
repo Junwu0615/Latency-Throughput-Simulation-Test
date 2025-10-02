@@ -25,6 +25,12 @@
 <br>
 
 ### *B.　Docker Build*
+- #### *進入路徑 & 創建持久化空間*
+  ```bash
+  cd docker
+  md mongo_data; md redis_data; md redis_insight_data;
+  ```
+  
 - #### *啟動 docker-compose*
   ```bash
   docker-compose up -d
