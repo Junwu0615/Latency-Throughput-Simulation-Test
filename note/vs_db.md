@@ -11,7 +11,7 @@
 ## *⭐ Python vs Golang 語言效能差異比較 (含數據庫) ⭐*
 ### *A.　測試方式*
 - #### *[producer] 為期 1 分鐘不休眠傳遞訊息至 Kafka，時間到關閉程序*
-- #### *[consumer] 訂閱 Kafka Topic 解析訊號後發送至 Redis & MongoDB*
+- #### *[consumer] ⭐ 訂閱 Kafka Topic 解析訊號後發送至 Redis & MongoDB ⭐*
 - #### *預期結果 `consumer >= producer (消耗速度要大於新增速度)` ; 不預期結果: `consumer < producer`*
 
 <br>
