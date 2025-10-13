@@ -9,4 +9,25 @@
 <br>
 
 ## *⭐ Golang ⭐*
-- #### *???*
+- #### *[下載 GO 語言環境](https://go.dev/)*
+
+- #### *初始化 Go 模組*
+    ```bash
+    cd golang
+    go mod init golang
+    ```
+  
+- #### *安裝 Kafka 客戶端庫*
+    ```bash
+    go get github.com/segmentio/kafka-go
+    ```
+  
+- #### *更新依賴*
+    ```bash
+    go mod tidy
+    ```
+  
+- #### *運行測試*
+    ```bash
+    go run consumer.go
+    ```
