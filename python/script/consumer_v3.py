@@ -3,11 +3,6 @@ TODO
     吞吐量 v3: 異步 I/O (Asyncio)
         - 優雅的 Python 方案
         - 使用 asyncio 配合 motor (Mongo Async) 和 aioredis 等，可以單執行緒、無阻塞地處理所有 I/O
-    result:
-        - Processed: ... msgs
-        - Throughput: ... msg/s
-        - Avg Latency: ... ms ( ... s )
-        - P99 Latency: ... ms ( ... s )
 """
 import time, json, statistics, redis
 import numpy as np
@@ -88,7 +83,7 @@ redis_batch_data = []
 mongo_batch_data = []
 BATCH_SIZE = 1000 # 批次大小
 
-logger.warning('🔥 Consumer started... waiting for messages')
+logger.warning('Consumer started... waiting for messages')
 try:
     for message in consumer:
         # 解析 Kafka 訊息

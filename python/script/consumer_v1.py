@@ -1,11 +1,6 @@
 """
 TODO
     吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O
-    result:
-        - Processed: 396000 msgs
-        - Throughput: 1941.70 msg/s
-        - Avg Latency: 0.91 ms ( 0.00 s )
-        - P99 Latency: 6.51 ms ( 0.01 s )
 """
 import time, json, statistics, redis
 import numpy as np
@@ -86,7 +81,7 @@ redis_batch_data = []
 mongo_batch_data = []
 BATCH_SIZE = 1000 # 批次大小
 
-logger.warning('🔥 Consumer started... waiting for messages')
+logger.warning('Consumer started... waiting for messages')
 try:
     for message in consumer:
         # 解析 Kafka 訊息

@@ -4,11 +4,6 @@ TODO
         - 多 Consumer 實例
         - Kafka 原生最佳方案 # 確保 Kafka Topic 有多個分割區，並運行多個 consumer.py 實例
         - 最可靠的長遠方案 # 在不同 CPU / 機器上擴展，消除單點瓶頸
-    result:
-        - Processed: ... msgs
-        - Throughput: ... msg/s
-        - Avg Latency: ... ms ( ... s )
-        - P99 Latency: ... ms ( ... s )
 """
 import time, json, statistics, redis
 import numpy as np
@@ -89,7 +84,7 @@ redis_batch_data = []
 mongo_batch_data = []
 BATCH_SIZE = 1000 # 批次大小
 
-logger.warning('🔥 Consumer started... waiting for messages')
+logger.warning('Consumer started... waiting for messages')
 try:
     for message in consumer:
         # 解析 Kafka 訊息

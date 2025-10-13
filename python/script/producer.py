@@ -35,9 +35,11 @@ def error_callback(exception):
 
 
 if __name__ == '__main__':
-    logger.warning('🚀 Producer started, sending messages to Kafka...')
+    logger.warning('Producer started, sending messages to Kafka... 1 min closedown')
+    start_time = time.time()
     try:
-        while True:
+        # while True:
+        while start_time + 60 > time.time():
             data = generate_data()
             # producer.send(TOPIC, value=data)
             producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)

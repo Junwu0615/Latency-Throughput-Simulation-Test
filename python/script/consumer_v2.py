@@ -2,11 +2,6 @@
 TODO
     吞吐量 v2: 導入 ThreadPoolExecutor # 多執行緒
         - 用多個執行緒來同時執行 Redis 和 MongoDB 的 I/O 批次寫入
-    result:
-        - Processed: ... msgs
-        - Throughput: ... msg/s
-        - Avg Latency: ... ms ( ... s )
-        - P99 Latency: ... ms ( ... s )
 """
 import time, json, statistics, redis
 import numpy as np
@@ -111,7 +106,7 @@ def write_to_mongo(data_to_write):
     # logger.info('MongoDB Batch Write Complete')
 
 
-logger.warning('🔥 Consumer started... waiting for messages')
+logger.warning('Consumer started... waiting for messages')
 try:
     for message in consumer:
         # 解析 Kafka 訊息
