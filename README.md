@@ -23,7 +23,7 @@
 
 <br>
 
-### *B.　Docker Build*
+### *B.　說明文件*
 - #### *[Docker 啟動必要服務環境](./note/docker.md)*
 - #### *[Python 實作流程](./note/python.md)*
 - #### *[GO 實作流程](./note/go.md)*
