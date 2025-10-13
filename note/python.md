@@ -9,4 +9,7 @@
 <br>
 
 ## *⭐ Python ⭐*
-- #### *???*
+- #### *流程運行*
+```Text
+Producer → Kafka → Consumer → Redis/MongoDB
+```
