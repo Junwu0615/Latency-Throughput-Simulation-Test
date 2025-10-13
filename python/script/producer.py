@@ -25,10 +25,19 @@ def generate_data():
     }
 
 
+def success_callback(metadata):
+    logger.info(f'Message sent to partition {metadata.partition} @ offset {metadata.offset}')
+
+
+def error_callback(exception):
+    logger.error('Failed to send message')
+
+
 if __name__ == '__main__':
     logger.warning('🚀 Producer started, sending messages to Kafka...')
     while True:
         data = generate_data()
-        producer.send(TOPIC, value=data)
-        producer.flush()
-        time.sleep(0.001) # 1ms interval
+        # producer.send(TOPIC, value=data)
+        producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
+        # producer.flush()
+        # time.sleep(0.001) # 1ms interval
