@@ -14,6 +14,8 @@
 - #### *平均延遲（ Average Latency ）# 平均延遲 ? 秒*
 - #### *P99 延遲（ P99 Latency ） # 99% 的訊息延遲超過 ? 秒*
 
+<br>
+
 ### *B.　Python 截圖*
 
 [//]: # (- ![JPG]&#40;../sample/python_00.jpg&#41;)

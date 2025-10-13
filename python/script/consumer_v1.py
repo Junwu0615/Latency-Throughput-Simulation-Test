@@ -1,3 +1,12 @@
+"""
+TODO
+    吞吐量 v1
+    result:
+        - Processed: 396000 msgs
+        - Throughput: 1941.70 msg/s
+        - Avg Latency: 0.91 ms ( 0.00 s )
+        - P99 Latency: 6.51 ms ( 0.01 s )
+"""
 import time, json, statistics, redis
 import numpy as np
 from kafka import KafkaConsumer
@@ -145,7 +154,7 @@ except KeyboardInterrupt:
     try:
         logger.error('正在關閉 Kafka Consumer ...', exc_info=False)
         consumer.close()
-        logger.warning('Kafka Consumer 已關閉 ...')
+        logger.warning('Kafka Consumer 已關閉 !')
 
     except Exception as e:
         logger.error('關閉 Kafka Consumer 時發生錯誤')
@@ -162,7 +171,7 @@ except KeyboardInterrupt:
     if 'redis_client' in locals() and isinstance(redis_client, redis.Redis):
         try:
             redis_client.connection_pool.disconnect()
-            logger.warning("Redis 連線池已明確關閉並釋放資源 !")
+            logger.warning('Redis 連線池已明確關閉並釋放資源 !')
 
         except Exception as e:
             logger.error('關閉 Redis 連線池時發生錯誤')
