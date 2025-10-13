@@ -12,7 +12,7 @@
 ### *A.　測試方式*
 - #### *[producer] 為期 1 分鐘不休眠傳遞訊息至 Kafka，時間到關閉程序*
 - #### *[consumer] 訂閱 Kafka Topic 解析訊號後發送至 Redis & MongoDB*
-- #### *期許結果 `consumer >= producer` ; 不預期結果: `consumer < producer`*
+- #### *預期結果 `consumer >= producer (消耗速度要大於新增速度)` ; 不預期結果: `consumer < producer`*
 
 <br>
 
@@ -23,9 +23,10 @@
 
 <br>
 
-### *C.　Python 截圖*
+### *C.　Python 測試結果*
 - #### *吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O*
 - ![JPG](../sample/python_01.jpg)
+  - ##### *實例數量 : 1*
   - ##### *累計處理訊息 : 1,750,000 msg / s*
   - ##### *⭐ 吞吐量 : 16,449.46 msg / s*
   - ##### *平均延遲 : 47,240.35 ms ( 47.24 s )*
@@ -33,6 +34,7 @@
 
 - #### *吞吐量 v2: 導入 ThreadPoolExecutor # 多執行緒*
 - ![JPG](../sample/python_02.jpg)
+  - ##### *實例數量 : 1*
   - ##### *累計處理訊息 : 3,897,000 msg / s*
   - ##### *⭐ 吞吐量 : 26,097.25 msg / s*
   - ##### *平均延遲 : 89,505.11 ms ( 89.51 s )*
@@ -55,6 +57,7 @@
   - ##### *需要設定 kafka 同步使用 Topic 上限*
 - ![JPG](../sample/python_05.jpg)
 - ![JPG](../sample/python_06.jpg)
+  - ##### *實例數量 : 8*
   - ##### *累計處理訊息 : 1,855,000 msg / s*
   - ##### *⭐ 吞吐量 : 31,079.58 msg / s*
   - ##### *平均延遲 : 93.57 ms ( 0.093 s )*
