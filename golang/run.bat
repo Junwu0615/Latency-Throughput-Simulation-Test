@@ -1,13 +1,12 @@
 @echo off
 
 cd %~dp0
-cd ..
 echo Current directory: %cd%
 
-call .\.venv\Scripts\activate
+call ..\.venv\Scripts\activate
 echo Change venv: .\.venv\Scripts\activate
 
-start cmd /k "python python\script\producer.py"
+start cmd /k "python ..\python\script\producer.py"
 
 
 REM GO: 無數據庫
