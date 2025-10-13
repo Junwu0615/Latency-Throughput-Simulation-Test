@@ -1,11 +1,14 @@
 """
 TODO
-    吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O
+    吞吐量 v4: 水平擴展
+        - 多 Consumer 實例
+        - Kafka 原生最佳方案 # 確保 Kafka Topic 有多個分割區，並運行多個 consumer.py 實例
+        - 最可靠的長遠方案 # 在不同 CPU / 機器上擴展，消除單點瓶頸
     result:
-        - Processed: 396000 msgs
-        - Throughput: 1941.70 msg/s
-        - Avg Latency: 0.91 ms ( 0.00 s )
-        - P99 Latency: 6.51 ms ( 0.01 s )
+        - Processed: ... msgs
+        - Throughput: ... msg/s
+        - Avg Latency: ... ms ( ... s )
+        - P99 Latency: ... ms ( ... s )
 """
 import time, json, statistics, redis
 import numpy as np

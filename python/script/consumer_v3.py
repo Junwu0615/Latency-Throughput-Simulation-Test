@@ -1,11 +1,13 @@
 """
 TODO
-    吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O
+    吞吐量 v3: 異步 I/O (Asyncio)
+        - 優雅的 Python 方案
+        - 使用 asyncio 配合 motor (Mongo Async) 和 aioredis 等，可以單執行緒、無阻塞地處理所有 I/O
     result:
-        - Processed: 396000 msgs
-        - Throughput: 1941.70 msg/s
-        - Avg Latency: 0.91 ms ( 0.00 s )
-        - P99 Latency: 6.51 ms ( 0.01 s )
+        - Processed: ... msgs
+        - Throughput: ... msg/s
+        - Avg Latency: ... ms ( ... s )
+        - P99 Latency: ... ms ( ... s )
 """
 import time, json, statistics, redis
 import numpy as np

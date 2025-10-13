@@ -19,10 +19,26 @@
 ### *B.　Python 截圖*
 
 [//]: # (- ![JPG]&#40;../sample/python_00.jpg&#41;)
+- #### *吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O*
 - ![JPG](../sample/python_01.jpg)
-    ```Text
-    Processed: 396000 msgs | Throughput: 1941.70 msg/s | Avg Latency: 0.91 ms ( 0.00 s ) | P99 Latency: 6.51 ms ( 0.01 s ) 
-    ```
   - #### *吞吐量 : 1941.70 msg / s*
   - #### *平均延遲 : 0.91 ms ( 0.00 s )*
   - #### *P99 延遲 : 6.51 ms ( 0.01 s )*
+  - 
+- #### *吞吐量 v2: 導入 ThreadPoolExecutor # 多執行緒*
+- ![JPG](../sample/python_02.jpg)
+  - #### *吞吐量 : ... msg / s*
+  - #### *平均延遲 : ... ms ( ... s )*
+  - #### *P99 延遲 : ... ms ( ... s )*
+
+- #### *吞吐量 v3: 異步 I/O (Asyncio)*
+- ![JPG](../sample/python_03.jpg)
+  - #### *吞吐量 : ... msg / s*
+  - #### *平均延遲 : ... ms ( ... s )*
+  - #### *P99 延遲 : ... ms ( ... s )*
+  - 
+- #### *吞吐量 v4: 水平擴展*
+- ![JPG](../sample/python_04.jpg)
+  - #### *吞吐量 : ... msg / s*
+  - #### *平均延遲 : ... ms ( ... s )*
+  - #### *P99 延遲 : ... ms ( ... s )*
