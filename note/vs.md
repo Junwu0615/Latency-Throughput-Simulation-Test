@@ -55,6 +55,7 @@
 - #### *吞吐量 v4: 水平擴展 [8]*
 - ![JPG](../sample/kafka_05.jpg)
   - ##### *需要設定 kafka 同步使用 Topic 上限*
+  - ##### *⭐ Topic 上限拉高有助於大幅提升吞吐速度 ⭐*
 - ![JPG](../sample/python_05.jpg)
 - ![JPG](../sample/python_06.jpg)
   - ##### *實例數量 : 8*
