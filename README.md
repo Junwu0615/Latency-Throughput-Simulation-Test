@@ -42,7 +42,3 @@
 | 吞吐量 | 同步轉異步 | 單筆/同步 ( Sync ) I/O 轉換為 批次/異步 ( Batch/Async ) I/O |
 
 <br>
-
-### *D.　測試指標*
-- #### *吞吐量（ Throughput, msgs/sec ）*
-- #### *平均延遲（ Average Latency ）*

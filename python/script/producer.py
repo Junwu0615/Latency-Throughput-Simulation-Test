@@ -31,7 +31,7 @@ def success_callback(metadata):
 
 
 def error_callback(exception):
-    logger.error('Failed to send message')
+    logger.error(f'Failed to send message: {exception}')
 
 
 if __name__ == '__main__':
@@ -42,9 +42,9 @@ if __name__ == '__main__':
             # producer.send(TOPIC, value=data)
             producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
             # producer.flush() # flush() 會阻塞 Producer，破壞了 Kafka 內建的批次處理。移除可以讓 Producer 以非同步方式發送數據包。
-            # time.sleep(0.001) # 硬性限制 1ms interval
+            time.sleep(0.0001) # 硬性限制 0.1ms interval
 
-    except KeyboardInterrupt:
+    finally:
         try:
             logger.error('正在關閉 Kafka Producer ...', exc_info=False)
             producer.close()
