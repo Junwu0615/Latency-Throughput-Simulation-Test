@@ -13,7 +13,7 @@ REM 吞吐量 v1: 用 batch 方式塞資料 但還是需要依序等待 I/O
 @REM start cmd /k "python python\script\consumer_v1.py"
 
 REM 吞吐量 v2: 導入 ThreadPoolExecutor # 多執行緒
-start cmd /k "python python\script\consumer_v2.py"
+@REM start cmd /k "python python\script\consumer_v2.py"
 
 REM 吞吐量 v3: 異步 I/O (Asyncio)
 @REM start cmd /k "python python\script\consumer_v3.py"
