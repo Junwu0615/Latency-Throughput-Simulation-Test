@@ -11,8 +11,6 @@
 ## *⭐ Python ⭐*
 - ### *A.　流程運行*
 ```Text
-*Producer → *Kafka → *Consumer → *Redis / *MongoDB
-
 [Data Producer #Python] # producer.py [模擬高頻率資料流產生]
        │
        ▼
