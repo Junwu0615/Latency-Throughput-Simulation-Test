@@ -1,3 +1,5 @@
-confluent-kafka==2.11.1
+# confluent-kafka==2.11.1
+kafka-python==2.2.15
 pymongo==4.15.2
 redis==6.4.0
+git+https://github.com/Junwu0615/Database-Template@main

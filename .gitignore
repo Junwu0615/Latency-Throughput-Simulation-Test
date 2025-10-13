@@ -6,3 +6,4 @@ __pycache__
 mongo_data
 redis_data
 redis_insight_data
+log

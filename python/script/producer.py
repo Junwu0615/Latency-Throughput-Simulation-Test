@@ -1,17 +1,34 @@
-from confluent_kafka import Producer
-import time
-import json
+import time, json, random
+from kafka import KafkaProducer
+from utils.logger import Logger
 
-conf = {
-    'bootstrap.servers': 'localhost:9092'
-}
-producer = Producer(conf)
 
-topic = "test_topic"
+# TODO 初始化 logger
+logger = Logger(console_name=f'.producer_console',
+                file_name=f'.producer_file')
 
-for i in range(5):
-    data = {"id": i, "message": f"hello {i}"}
-    producer.produce(topic, json.dumps(data).encode("utf-8"))
-    producer.flush()
-    print(f"Produced: {data}")
-    time.sleep(1)
+
+# TODO 初始化 Kafka Producer
+KAFKA_BROKER = 'localhost:9092'
+TOPIC = 'test-data'
+producer = KafkaProducer(
+    bootstrap_servers=[KAFKA_BROKER],
+    value_serializer=lambda v: json.dumps(v).encode('utf-8')
+)
+
+
+def generate_data():
+    return {
+        'timestamp': time.time(),
+        'device_id': f'dev-{random.randint(1, 10)}',
+        'value': random.random() * 100
+    }
+
+
+if __name__ == '__main__':
+    logger.warning('🚀 Producer started, sending messages to Kafka...')
+    while True:
+        data = generate_data()
+        producer.send(TOPIC, value=data)
+        producer.flush()
+        time.sleep(0.001) # 1ms interval

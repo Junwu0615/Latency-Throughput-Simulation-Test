@@ -11,5 +11,18 @@
 ## *⭐ Python ⭐*
 - #### *流程運行*
 ```Text
-Producer → Kafka → Consumer → Redis/MongoDB
+*Producer → *Kafka → *Consumer → *Redis / *MongoDB
+
+[Data Producer #Python] # producer.py [模擬高頻率資料流產生]
+       │
+       ▼
+ [Kafka Topic: "test-data"]
+       │
+       ▼
+[Data Consumer #Python] 
+       │
+       ├── Read from Kafka # consumer.py [從 Kafka 消費資料並寫入 Redis / MongoDB]
+       │
+   ├── Write to Redis [快取]
+   └── Write to MongoDB [落地]
 ```
