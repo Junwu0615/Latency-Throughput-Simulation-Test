@@ -22,7 +22,11 @@ REM 吞吐量 v4: 水平擴展 [2]
 @REM start cmd /k "python python\script\consumer_v4.py"
 @REM start cmd /k "python python\script\consumer_v4.py"
 
-REM 吞吐量 v4: 水平擴展 [4]
+REM 吞吐量 v4: 水平擴展 [8]
+start cmd /k "python python\script\consumer_v4.py"
+start cmd /k "python python\script\consumer_v4.py"
+start cmd /k "python python\script\consumer_v4.py"
+start cmd /k "python python\script\consumer_v4.py"
 start cmd /k "python python\script\consumer_v4.py"
 start cmd /k "python python\script\consumer_v4.py"
 start cmd /k "python python\script\consumer_v4.py"

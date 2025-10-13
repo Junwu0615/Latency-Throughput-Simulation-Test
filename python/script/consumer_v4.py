@@ -85,12 +85,16 @@ start_time = time.time()
 # TODO: 創建一個列表來收集數據
 redis_batch_data = []
 mongo_batch_data = []
-BATCH_SIZE = 1000 # 批次大小
+# 批次大小
+# BATCH_SIZE = 1000
+# BATCH_SIZE = 2000
+BATCH_SIZE = 3000
 
 # TODO
 #  初始化 I/O 執行緒池 ( 2 個執行緒專門負責 Redis 和 Mongo 寫入 )
 #  主執行緒可繼續處理 Kafka 訊息
-io_executor = ThreadPoolExecutor(max_workers=2)
+MAX_WORKERS = 32
+io_executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 
 def write_to_redis(data_to_write):
