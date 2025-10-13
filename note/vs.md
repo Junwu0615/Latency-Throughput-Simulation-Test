@@ -10,3 +10,4 @@
 
 ## *⭐ Python vs Golang 語言效能差異比較 ⭐*
 - #### *???*
+- ![JPG](../sample/python_00.jpg)

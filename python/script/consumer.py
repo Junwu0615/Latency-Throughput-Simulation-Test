@@ -72,6 +72,11 @@ latencies = []
 count = 0
 start_time = time.time()
 
+# TODO: 創建一個列表來收集數據
+redis_batch_data = []
+mongo_batch_data = []
+BATCH_SIZE = 1000 # 批次大小
+
 logger.warning('🔥 Consumer started... waiting for messages')
 try:
     for message in consumer:
@@ -83,11 +88,23 @@ try:
         latency = recv_time - data['timestamp']
         latencies.append(latency)
 
-        # 寫入 Redis (以 device_id 為 key)
-        redis_client.set(data['device_id'], json.dumps(data))
+        # TODO Redis 寫入方式
+        # --------- 同步 ---------
+        # redis_client.set(data['device_id'], json.dumps(data))
+        # --------- 異步 ---------
+        redis_batch_data.append((data['device_id'], json.dumps(data)))
 
-        # 寫入 MongoDB
-        collection.insert_one({
+        # TODO MongoDB 寫入方式
+        # --------- 同步 ---------
+        # collection.insert_one({
+        #     'device_id': data['device_id'],
+        #     'value': data['value'],
+        #     'producer_ts': data['timestamp'],
+        #     'consumer_ts': recv_time,
+        #     'latency': latency
+        # })
+        # --------- 異步 ---------
+        mongo_batch_data.append({
             'device_id': data['device_id'],
             'value': data['value'],
             'producer_ts': data['timestamp'],
@@ -96,6 +113,21 @@ try:
         })
 
         count += 1
+
+        # 批次處理邏輯
+        if count > 0 and count % BATCH_SIZE == 0:
+            # TODO Redis Pipeline 執行異步 SET
+            pipe = redis_client.pipeline()
+            for key, value in redis_batch_data:
+                pipe.set(key, value)
+            pipe.execute()
+            redis_batch_data.clear()
+
+            # TODO MongoDB insert_many 執行異步插入
+            collection.insert_many(mongo_batch_data)
+            mongo_batch_data.clear()
+
+        # 每處理 1000 筆訊息，輸出一次統計資訊
         if count % 1000 == 0:
             elapsed = time.time() - start_time
             throughput = count / elapsed

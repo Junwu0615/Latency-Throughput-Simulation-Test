@@ -9,7 +9,7 @@
 <br>
 
 ## *⭐ Python ⭐*
-- #### *流程運行*
+- ### *A.　流程運行*
 ```Text
 *Producer → *Kafka → *Consumer → *Redis / *MongoDB
 
@@ -26,3 +26,24 @@
    ├── Write to Redis [快取]
    └── Write to MongoDB [落地]
 ```
+
+<br>
+
+- ### *B.　Kafka*
+- ![JPG](../sample/kafka_00.jpg)
+- ![JPG](../sample/kafka_01.jpg)
+- ![JPG](../sample/kafka_02.jpg)
+- ![JPG](../sample/kafka_03.jpg)
+- ![JPG](../sample/kafka_04.jpg)
+
+<br>
+
+- ### *C.　MongoDB*
+- ![JPG](../sample/mongodb_00.jpg)
+- ![JPG](../sample/mongodb_01.jpg)
+
+<br>
+
+- ### *D.　Redis*
+- ![JPG](../sample/redis_00.jpg)
+- ![JPG](../sample/redis_01.jpg)
