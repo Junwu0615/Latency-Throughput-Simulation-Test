@@ -14,7 +14,13 @@
 - #### *平均延遲（ Average Latency ）# 平均延遲 ? 秒*
 - #### *P99 延遲（ P99 Latency ） # 99% 的訊息延遲超過 ? 秒*
 
-### *B.　截圖*
+### *B.　Python 截圖*
 
 [//]: # (- ![JPG]&#40;../sample/python_00.jpg&#41;)
 - ![JPG](../sample/python_01.jpg)
+    ```Text
+    Processed: 396000 msgs | Throughput: 1941.70 msg/s | Avg Latency: 0.91 ms ( 0.00 s ) | P99 Latency: 6.51 ms ( 0.01 s ) 
+    ```
+  - #### *吞吐量 : 1941.70 msg / s*
+  - #### *平均延遲 : 0.91 ms ( 0.00 s )*
+  - #### *P99 延遲 : 6.51 ms ( 0.01 s )*
