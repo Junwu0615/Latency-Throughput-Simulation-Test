@@ -23,16 +23,7 @@
 
 <br>
 
-### *B.　說明文件*
-- #### *[Docker 啟動必要服務環境](./note/docker.md)*
-- #### *[Python 實作流程](./note/python.md)*
-- #### *[GO 實作流程](./note/go.md)*
-- #### *[Python vs Golang 語言效能差異比較 (不含數據庫)](./note/vs.md)*
-- #### *[Python vs Golang 語言效能差異比較 (含數據庫)](./note/vs_db.md)*
-
-<br>
-
-### *C.　技術棧說明*
+### *B.　技術棧*
 |類別|技術|說明|
 |:--:|:--:|:--:|
 | 測試主體 | Go + Python | 比較語言在資料流處理的效能 |
@@ -40,5 +31,14 @@
 | 快取層 | Redis | 測試即時資料存取效能 |
 | 儲存層 | MongoDB | 模擬落地儲存的瓶頸與延遲 |
 | 吞吐量 | 同步轉異步 | `單筆/同步 ( Sync ) I/O` 轉換為 `批次/異步 ( Batch/Async ) I/O` |
+
+<br>
+
+### *C.　文件*
+- #### *[Docker 啟動必要服務環境](./note/docker.md)*
+- #### *[Python 實作流程](./note/python.md)*
+- #### *[GO 實作流程](./note/go.md)*
+- #### *[Python vs Golang 語言效能差異比較 (不含數據庫)](./note/vs.md)*
+- #### *[Python vs Golang 語言效能差異比較 (含數據庫)](./note/vs_db.md)*
 
 <br>
