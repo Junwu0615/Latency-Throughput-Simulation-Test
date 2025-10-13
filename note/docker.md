@@ -30,5 +30,5 @@
   docker-compose -p latency_throughput_simulation_test down
   ```
   
-- ![PNG](./sample/docker-compose%20up_00.PNG)
-- ![PNG](./sample/docker-compose%20up_01.PNG)
+- ![PNG](../sample/docker-compose%20up_00.PNG)
+- ![PNG](../sample/docker-compose%20up_01.PNG)
