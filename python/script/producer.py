@@ -14,6 +14,8 @@ KAFKA_BROKER = 'localhost:9092'
 TOPIC = 'test-data'
 producer = KafkaProducer(
     bootstrap_servers=[KAFKA_BROKER],
+    linger_ms=5, # 延遲 5ms 再發送，保證批次穩定
+    batch_size=32 * 1024, # 32KB
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
 
@@ -45,8 +47,9 @@ if __name__ == '__main__':
             # producer.send(TOPIC, value=data)
             producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
             # producer.flush() # flush() 會阻塞 Producer，破壞了 Kafka 內建的批次處理。移除可以讓 Producer 以非同步方式發送數據包。
-            # time.sleep(0.0001) # 硬性限制 0.1ms interval
-            # time.sleep(0.00001) # 硬性限制 0.01ms interval
+            # time.sleep(0.0001) # 硬性限制 0.1 ms interval
+            # time.sleep(0.00001) # 硬性限制 0.01 ms interval
+            # time.sleep(0.00004) # 硬性限制 0.04 ms interval
 
     finally:
         try:

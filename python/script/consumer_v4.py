@@ -9,6 +9,7 @@ import time, json, statistics, redis
 import numpy as np
 from kafka import KafkaConsumer
 from pymongo import MongoClient
+from concurrent.futures import ThreadPoolExecutor
 from utils.logger import Logger
 
 
@@ -24,9 +25,10 @@ TOPIC = 'test-data'
 consumer = KafkaConsumer(
     TOPIC,
     bootstrap_servers=[KAFKA_BROKER],
-    auto_offset_reset='earliest',
-    # auto_offset_reset='latest',
-    enable_auto_commit=True,
+    auto_offset_reset='earliest', # 從最早的 offset 開始 # 確保讀到所有訊息
+    # auto_offset_reset='latest', # 從最新的 offset 開始
+    # enable_auto_commit=True, # [啟動] 每隔約 5 秒自動更新 offset
+    enable_auto_commit=False, # [取消] 每隔約 5 秒自動更新 offset
     group_id='python-consumer',
     value_deserializer=lambda v: json.loads(v.decode('utf-8'))
 )
@@ -85,6 +87,29 @@ redis_batch_data = []
 mongo_batch_data = []
 BATCH_SIZE = 1000 # 批次大小
 
+# TODO
+#  初始化 I/O 執行緒池 ( 2 個執行緒專門負責 Redis 和 Mongo 寫入 )
+#  主執行緒可繼續處理 Kafka 訊息
+io_executor = ThreadPoolExecutor(max_workers=2)
+
+
+def write_to_redis(data_to_write):
+    # TODO Redis Pipeline 執行異步 SET
+    pipe = redis_client.pipeline()
+    for key, value in data_to_write:
+        pipe.set(key, value)
+    pipe.execute()
+    redis_batch_data.clear()
+    # logger.info('Redis Batch Write Complete')
+
+
+def write_to_mongo(data_to_write):
+    # TODO MongoDB insert_many 執行異步插入
+    collection.insert_many(data_to_write)
+    mongo_batch_data.clear()
+    # logger.info('MongoDB Batch Write Complete')
+
+
 logger.warning('Consumer started... waiting for messages')
 try:
     for message in consumer:
@@ -97,20 +122,10 @@ try:
         latencies.append(latency)
 
         # TODO Redis 寫入方式
-        # --------- 同步 ---------
-        # redis_client.set(data['device_id'], json.dumps(data))
         # --------- 異步 ---------
         redis_batch_data.append((data['device_id'], json.dumps(data)))
 
         # TODO MongoDB 寫入方式
-        # --------- 同步 ---------
-        # collection.insert_one({
-        #     'device_id': data['device_id'],
-        #     'value': data['value'],
-        #     'producer_ts': data['timestamp'],
-        #     'consumer_ts': recv_time,
-        #     'latency': latency
-        # })
         # --------- 異步 ---------
         mongo_batch_data.append({
             'device_id': data['device_id'],
@@ -124,16 +139,19 @@ try:
 
         # 批次處理邏輯
         if count > 0 and count % BATCH_SIZE == 0:
-            # TODO Redis Pipeline 執行異步 SET
-            pipe = redis_client.pipeline()
-            for key, value in redis_batch_data:
-                pipe.set(key, value)
-            pipe.execute()
-            redis_batch_data.clear()
+            # 複製當前的緩衝區數據，避免在執行緒中被修改
+            redis_data_copy = redis_batch_data.copy()
+            mongo_data_copy = mongo_batch_data.copy()
 
-            # TODO MongoDB insert_many 執行異步插入
-            collection.insert_many(mongo_batch_data)
+            # 清空主執行緒的緩衝區，準備接收下一批數據
+            redis_batch_data.clear()
             mongo_batch_data.clear()
+
+            # 提交任務給執行緒池 (非阻塞，主執行緒立即返回)
+            io_executor.submit(write_to_redis, redis_data_copy)
+            io_executor.submit(write_to_mongo, mongo_data_copy)
+
+            consumer.commit()
 
         # 每處理 1000 筆訊息，輸出一次統計資訊
         if count % 1000 == 0:
@@ -155,6 +173,8 @@ except KeyboardInterrupt:
 
     if mongo_batch_data:
         io_executor.submit(write_to_mongo, mongo_batch_data)
+
+    consumer.commit()
 
     try:
         logger.error('正在關閉 Kafka Consumer ...', exc_info=False)
