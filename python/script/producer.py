@@ -26,7 +26,8 @@ def generate_data():
 
 
 def success_callback(metadata):
-    logger.info(f'Message sent to partition {metadata.partition} @ offset {metadata.offset}')
+    # logger.info(f'Message sent to partition {metadata.partition} @ offset {metadata.offset}')
+    pass
 
 
 def error_callback(exception):
@@ -35,9 +36,19 @@ def error_callback(exception):
 
 if __name__ == '__main__':
     logger.warning('🚀 Producer started, sending messages to Kafka...')
-    while True:
-        data = generate_data()
-        # producer.send(TOPIC, value=data)
-        producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
-        # producer.flush()
-        # time.sleep(0.001) # 1ms interval
+    try:
+        while True:
+            data = generate_data()
+            # producer.send(TOPIC, value=data)
+            producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
+            # producer.flush() # flush() 會阻塞 Producer，破壞了 Kafka 內建的批次處理。移除可以讓 Producer 以非同步方式發送數據包。
+            time.sleep(0.001) # 拔除硬性限制 # 1ms interval
+
+    except KeyboardInterrupt:
+        try:
+            logger.error('正在關閉 Kafka Producer ...', exc_info=False)
+            producer.close()
+            logger.warning('Kafka Producer 已關閉 ...')
+
+        except Exception as e:
+            logger.error('關閉 Kafka Producer 時發生錯誤')

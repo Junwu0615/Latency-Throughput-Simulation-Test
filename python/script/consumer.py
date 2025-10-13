@@ -111,6 +111,14 @@ try:
 
 except KeyboardInterrupt:
     try:
+        logger.error('正在關閉 Kafka Consumer ...', exc_info=False)
+        consumer.close()
+        logger.warning('Kafka Consumer 已關閉 ...')
+
+    except Exception as e:
+        logger.error('關閉 Kafka Consumer 時發生錯誤')
+
+    try:
         logger.error('正在關閉 MongoDB 連線 ...', exc_info=False)
         mongo_client.close()
         logger.warning('MongoDB 連線已關閉 !')
