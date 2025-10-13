@@ -44,8 +44,8 @@ if __name__ == '__main__':
         # while True:
         while start_time + 60 > time.time():
             data = generate_data()
-            # producer.send(TOPIC, value=data)
             producer.send(TOPIC, value=data).add_callback(success_callback).add_errback(error_callback)
+
             # producer.flush() # flush() 會阻塞 Producer，破壞了 Kafka 內建的批次處理。移除可以讓 Producer 以非同步方式發送數據包。
             # time.sleep(0.0001) # 硬性限制 0.1 ms interval
             # time.sleep(0.00001) # 硬性限制 0.01 ms interval
@@ -54,8 +54,8 @@ if __name__ == '__main__':
     finally:
         try:
             logger.error('正在關閉 Kafka Producer ...', exc_info=False)
-            producer.flush()
-            time.sleep(2)  # 傳輸最後緩衝的時間
+            producer.flush() # 迴圈結束後，強制清空所有剩餘的訊息
+            time.sleep(2) # 傳輸最後緩衝的時間
             producer.close()
             logger.warning('Kafka Producer 已關閉 ...')
 
