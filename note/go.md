@@ -8,25 +8,5 @@
 
 <br>
 
-## *⭐ Latency-Throughput-Simulation-Test ⭐*
-
-### *A.　Current Progress*
-|項目|敘述|完成時間|
-|:--:|:--:|:--:|
-| 專案上架 | - | 2025-10-02 |
-| 新增 README | - | 2025-10-02 |
-| Docker 啟動必要服務環境 | - | 2025-10-02 |
-| 專案實作說明 | - | 2025-10-02 |
-| 新增說明文件 | - | 2025-10-13 |
-| Python 實作流程 | - | - |
-| GO 實作流程 | - | - |
-| 語言效能差異比較 | - | - |
-
-
-<br>
-
-### *B.　Docker Build*
-- #### *[Docker 啟動必要服務環境](./note/docker.md)*
-- #### *[Python 實作流程](./note/python.md)*
-- #### *[GO 實作流程](./note/go.md)*
-- #### *[語言效能差異比較](./note/vs.md)*
+## *⭐ Golang ⭐*
+- #### *???*
