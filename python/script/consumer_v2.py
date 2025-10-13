@@ -13,7 +13,8 @@ from utils.logger import Logger
 
 # TODO 初始化 logger
 logger = Logger(console_name=f'.consumer_console',
-                file_name=f'.consumer_file')
+                # file_name=f'.consumer_file'
+                )
 
 
 # TODO 初始化 Kafka Consumer
@@ -22,8 +23,8 @@ TOPIC = 'test-data'
 consumer = KafkaConsumer(
     TOPIC,
     bootstrap_servers=[KAFKA_BROKER],
-    # auto_offset_reset='earliest',
-    auto_offset_reset='latest',
+    auto_offset_reset='earliest',
+    # auto_offset_reset='latest',
     enable_auto_commit=True,
     group_id='python-consumer',
     value_deserializer=lambda v: json.loads(v.decode('utf-8'))
@@ -163,6 +164,12 @@ try:
             latencies.clear() # 清空 latencies 列表以重新開始下一批次的統計
 
 except KeyboardInterrupt:
+    if redis_batch_data:
+        io_executor.submit(write_to_redis, redis_batch_data)
+
+    if mongo_batch_data:
+        io_executor.submit(write_to_mongo, mongo_batch_data)
+
     try:
         logger.error('正在關閉 Kafka Consumer ...', exc_info=False)
         consumer.close()

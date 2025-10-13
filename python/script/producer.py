@@ -5,7 +5,8 @@ from utils.logger import Logger
 
 # TODO 初始化 logger
 logger = Logger(console_name=f'.producer_console',
-                file_name=f'.producer_file')
+                # file_name=f'.producer_file'
+                )
 
 
 # TODO 初始化 Kafka Producer
@@ -50,6 +51,8 @@ if __name__ == '__main__':
     finally:
         try:
             logger.error('正在關閉 Kafka Producer ...', exc_info=False)
+            producer.flush()
+            time.sleep(2)  # 傳輸最後緩衝的時間
             producer.close()
             logger.warning('Kafka Producer 已關閉 ...')
 
