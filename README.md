@@ -30,7 +30,7 @@
 | 消息中介層 | Kafka | 模擬高頻率資料流進入系統 |
 | 快取層 | Redis | 測試即時資料存取效能 |
 | 儲存層 | MongoDB | 模擬落地儲存的瓶頸與延遲 |
-| 吞吐量 | 同步轉異步 | `單筆/同步 ( Sync ) I/O` 轉換為 `批次/異步 ( Batch/Async ) I/O` |
+| 吞吐量 | Sync to Async | `單筆/同步 I/O` 轉換為 `批次/異步 I/O` |
 
 <br>
 
@@ -38,7 +38,8 @@
 - #### *[Docker 啟動必要服務環境](./note/docker.md)*
 - #### *[Python 實作流程](./note/python.md)*
 - #### *[GO 實作流程](./note/go.md)*
-- #### *[Python vs Golang 語言效能差異比較 (不含數據庫)](./note/vs.md)*
-- #### *[Python vs Golang 語言效能差異比較 (含數據庫)](./note/vs_db.md)*
+- #### *Python vs Golang 語言效能差異比較*
+  - #### *[不含數據庫](./note/vs.md)*
+  - #### *[含數據庫](./note/vs_db.md)*
 
 <br>
